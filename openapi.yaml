@@ -1,0 +1,1021 @@
+---
+openapi: 3.1.0
+components:
+  schemas:
+    AsignarPeriodo:
+      type: object
+      required:
+      - nombre
+      - fechaInicio
+      - fechaFin
+      - idTipoEts
+      description: DTO para asignar o editar un periodo ETS
+      properties:
+        nombre:
+          type: string
+          pattern: \S
+          description: Nombre del periodo
+        fechaInicio:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          description: Fecha de inicio del periodo
+        fechaFin:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          description: Fecha de fin del periodo
+        idTipoEts:
+          type: integer
+          format: int32
+          description: Id del tipo de ETS
+    CambiarNombre:
+      type: object
+      required:
+      - nombre
+      - primerApellido
+      - segundoApellido
+      description: DTO para actualizar el nombre del usuario
+      properties:
+        nombre:
+          type: string
+          pattern: \S
+          description: Nombre(s) del usuario
+        primerApellido:
+          type: string
+          pattern: \S
+          description: Primer apellido del usuario
+        segundoApellido:
+          type: string
+          pattern: \S
+          description: Segundo apellido del usuario
+    CambiarPassword:
+      type: object
+      required:
+      - passwordActual
+      - passwordNueva
+      - passwordConfirmacion
+      description: DTO para cambiar la contraseña del usuario
+      properties:
+        passwordActual:
+          type: string
+          pattern: \S
+          description: Contraseña actual del usuario
+        passwordNueva:
+          type: string
+          pattern: "^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$"
+          description: "Nueva contraseña — mínimo 8 caracteres, una mayúscula, un\
+            \ número y un caracter especial"
+        passwordConfirmacion:
+          type: string
+          pattern: \S
+          description: Confirmación de la nueva contraseña
+    CarreraDashboard:
+      type: object
+      description: DTO con la cantidad de exámenes por carrera
+      properties:
+        id:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Id de la carrera
+        nombre:
+          type: string
+          readOnly: true
+          description: Nombre de la carrera
+        totalExamenes:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Total de exámenes en la carrera
+    Catalogo:
+      type: object
+      description: DTO genérico para catálogos
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Identificador único del catálogo
+        nombre:
+          type: string
+          description: Nombre del elemento del catálogo
+    CrearExamen:
+      type: object
+      required:
+      - idMateria
+      - idDocente
+      - idAula
+      - idTurno
+      - idTipoEts
+      - fechaAplicacion
+      description: DTO para crear un examen ETS
+      properties:
+        idMateria:
+          type: integer
+          format: int32
+          description: Id de la materia / unidad de aprendizaje
+        idDocente:
+          type: integer
+          format: int32
+          description: Id del docente / profesor evaluador
+        idAula:
+          type: integer
+          format: int32
+          description: Id del aula / salón
+        idTurno:
+          type: integer
+          format: int32
+          description: Id del turno
+        idTipoEts:
+          type: integer
+          format: int32
+          description: Id del tipo de ETS
+        fechaAplicacion:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          description: Fecha y hora de aplicación del examen
+    Dashboard:
+      type: object
+      description: DTO con la información del dashboard del administrador
+      properties:
+        periodo:
+          $ref: "#/components/schemas/Periodo"
+          type: object
+          readOnly: true
+          description: Periodo ETS actual
+        totalExamenes:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Total de exámenes registrados
+        totalCarreras:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Total de carreras registradas
+        totalSalones:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Total de salones registrados
+        examenesPorCarrera:
+          type: array
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/CarreraDashboard"
+          description: Exámenes por carrera
+    DetalleEts:
+      type: object
+      description: DTO para describir los ETS ligados a una materia
+      properties:
+        id:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Id de la materia
+        materia:
+          type: string
+          readOnly: true
+          description: Nombre de la materia
+        plan:
+          type: string
+          readOnly: true
+          description: Plan de estudios
+        fecha:
+          type: string
+          readOnly: true
+          description: Fecha del ETS
+        hora:
+          type: string
+          readOnly: true
+          description: Hora del ETS
+        turno:
+          type: string
+          readOnly: true
+          description: Turno del ETS
+        salon:
+          type: string
+          readOnly: true
+          description: Salón asignado
+        evaluador:
+          type: string
+          readOnly: true
+          description: Nombre del evaluador
+        carrera:
+          type: string
+          readOnly: true
+          description: Carrera de la materia
+        guardado:
+          type: boolean
+          readOnly: true
+          description: Indica si el ETS fue guardado
+    EditarExamen:
+      type: object
+      required:
+      - idEts
+      - idMateria
+      - idDocente
+      - idAula
+      - idTurno
+      - idTipoEts
+      - fechaAplicacion
+      description: DTO para editar un examen ETS existente
+      properties:
+        idEts:
+          type: integer
+          format: int32
+          description: Id del examen a editar
+        idMateria:
+          type: integer
+          format: int32
+          description: Id de la materia / unidad de aprendizaje
+        idDocente:
+          type: integer
+          format: int32
+          description: Id del docente / profesor evaluador
+        idAula:
+          type: integer
+          format: int32
+          description: Id del aula / salón
+        idTurno:
+          type: integer
+          format: int32
+          description: Id del turno
+        idTipoEts:
+          type: integer
+          format: int32
+          description: Id del tipo de ETS
+        fechaAplicacion:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          description: Fecha y hora de aplicación del examen
+    EditarPeriodo:
+      type: object
+      required:
+      - idPeriodo
+      - nombre
+      - fechaInicio
+      - fechaFin
+      description: DTO para editar un periodo ETS existente
+      properties:
+        idPeriodo:
+          type: integer
+          format: int32
+          description: Id del periodo a editar
+        nombre:
+          type: string
+          pattern: \S
+          description: Nombre del periodo
+        fechaInicio:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          description: Fecha de inicio del periodo
+        fechaFin:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          description: Fecha de fin del periodo
+    EtsDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        materia:
+          type: string
+        maestro:
+          type: string
+        fecha:
+          type: string
+        salon:
+          type: string
+    EtsProximosDTO:
+      type: object
+      properties:
+        idEtsAgenda:
+          type: integer
+          format: int32
+        idEts:
+          type: integer
+          format: int32
+        materia:
+          type: string
+        fechaHora:
+          type: string
+        diasRestantes:
+          type: integer
+          format: int32
+    Examen:
+      type: object
+      description: DTO con la información de un examen ETS
+      properties:
+        idEts:
+          type: integer
+          format: int32
+          description: Id del examen
+        idMateria:
+          type: integer
+          format: int32
+          description: Id de la materia / unidad de aprendizaje
+        nombreMateria:
+          type: string
+          readOnly: true
+          description: Nombre de la materia
+        idDocente:
+          type: integer
+          format: int32
+          description: Id del docente / profesor evaluador
+        nombreDocente:
+          type: string
+          readOnly: true
+          description: Nombre del docente
+        idAula:
+          type: integer
+          format: int32
+          description: Id del aula / salón
+        claveAula:
+          type: string
+          readOnly: true
+          description: Clave del aula
+        idTurno:
+          type: integer
+          format: int32
+          description: Id del turno
+        nombreTurno:
+          type: string
+          readOnly: true
+          description: Nombre del turno
+        idTipoEts:
+          type: integer
+          format: int32
+          description: Id del tipo de ETS
+        fechaAplicacion:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          description: Fecha y hora de aplicación del examen
+    LocalDateTime:
+      type: string
+      format: date-time
+      examples:
+      - 2022-03-10T12:15:50
+    MateriaEtsDTO:
+      type: object
+      properties:
+        nombreUsuario:
+          type: string
+        avatar:
+          type: string
+        fecha:
+          type: string
+        duracionDias:
+          type: integer
+          format: int32
+        ets:
+          type: array
+          items:
+            $ref: "#/components/schemas/EtsProximosDTO"
+    Paginacion:
+      type: object
+      description: Clase DTO utilizada para recibir los datos de paginación por back.
+        Used in many
+      properties:
+        numeroPagina:
+          type: integer
+          writeOnly: true
+          format: int32
+          description: Número de página
+          minimum: 0
+        cantidadFilas:
+          type: integer
+          writeOnly: true
+          format: int32
+          description: Cantidad de filas por página
+          maximum: 500
+          minimum: 0
+    Perfil:
+      type: object
+      description: DTO con la información del perfil del usuario autenticado
+      properties:
+        nombre:
+          type: string
+          readOnly: true
+          description: Nombre(s) del usuario
+        primerApellido:
+          type: string
+          readOnly: true
+          description: Primer apellido
+        segundoApellido:
+          type: string
+          readOnly: true
+          description: Segundo apellido
+        email:
+          type: string
+          readOnly: true
+          description: Correo electrónico
+    Periodo:
+      type: object
+      description: DTO con la información del periodo ETS
+      properties:
+        idPeriodo:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Id del periodo
+        nombre:
+          type: string
+          readOnly: true
+          description: Nombre del periodo
+        fechaInicio:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          readOnly: true
+          description: Fecha de inicio del periodo
+        fechaFin:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          readOnly: true
+          description: Fecha de fin del periodo
+        periodoYaComenzo:
+          type: boolean
+          readOnly: true
+          description: Indica si el periodo ya comenzó — congela botones en el formulario
+        examenesAfectados:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Cantidad de exámenes afectados por cambio de fechas
+    SalonEtsDTO:
+      type: object
+      properties:
+        salon:
+          type: string
+        edificio:
+          type: string
+        editar:
+          type: boolean
+        eliminar:
+          type: boolean
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Authentication
+tags:
+- name: Administrador
+  description: Gestión de ETS para administradores
+- name: Perfil
+  description: Gestión del perfil del usuario autenticado
+paths:
+  /catalogo/carreras:
+    get:
+      summary: Obtiene todas las carreras
+      description: Retorna el listado completo de carreras disponibles
+      operationId: listAllCarreras
+      responses:
+        "200":
+          description: Petición exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Catalogo"
+      tags:
+      - Catalogo Controller
+  /catalogo/docentes:
+    get:
+      summary: Obtiene todos los docentes
+      description: Retorna el listado completo de docentes registrados
+      operationId: listAllDocentes
+      responses:
+        "200":
+          description: Petición exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Catalogo"
+      tags:
+      - Catalogo Controller
+  /catalogo/ets-by-filtros:
+    get:
+      summary: Obtiene ETS por filtros
+      description: "Retorna el listado de ETS filtrado por carrera, semestre y nombre"
+      operationId: listAllEts
+      parameters:
+      - name: idCarrera
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: idSemestre
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: nombre
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Petición exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EtsDTO"
+      tags:
+      - Catalogo Controller
+  /catalogo/semestres:
+    get:
+      summary: Obtiene todos los semestres
+      description: Retorna el listado completo de semestres disponibles
+      operationId: listAllSemestres
+      responses:
+        "200":
+          description: Petición exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Catalogo"
+      tags:
+      - Catalogo Controller
+  /catalogo/{idCarrera}/{idSemestre}/materia:
+    get:
+      summary: Obtiene materias por carrera y semestre
+      description: Retorna el listado de materias filtrado por ID de carrera e ID
+        de semestre
+      operationId: listMateriasByIdCarreraAndIdSemestre
+      parameters:
+      - name: idCarrera
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: idSemestre
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Petición exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Catalogo"
+      tags:
+      - Catalogo Controller
+  /gestion-ets/by-filtros:
+    get:
+      tags:
+      - Administrador
+      parameters:
+      - name: idEdificio
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: idSalon
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: salon
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SalonEtsDTO"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      summary: List Edificios By Filtros
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+  /gestion-ets/dashboard:
+    get:
+      summary: Obtiene el dashboard del administrador
+      operationId: getDashboard
+      tags:
+      - Administrador
+      responses:
+        "200":
+          description: Dashboard obtenido correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dashboard"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+  /gestion-ets/examenes:
+    get:
+      summary: Lista exámenes con filtros opcionales
+      operationId: listExamenes
+      tags:
+      - Administrador
+      parameters:
+      - name: idCarrera
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: idSemestre
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: idTurno
+        in: query
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Listado de exámenes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Examen"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+    put:
+      summary: Edita un examen existente
+      operationId: editarExamen
+      tags:
+      - Administrador
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditarExamen"
+        required: true
+      responses:
+        "200":
+          description: Examen editado correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "404":
+          description: Examen no encontrado
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+    post:
+      summary: Crea un nuevo examen
+      operationId: crearExamen
+      tags:
+      - Administrador
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CrearExamen"
+        required: true
+      responses:
+        "200":
+          description: Examen creado correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+  /gestion-ets/periodo:
+    put:
+      tags:
+      - Administrador
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditarPeriodo"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+      summary: Editar Periodo
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+    post:
+      summary: Asigna un nuevo periodo ETS
+      operationId: asignarPeriodo
+      tags:
+      - Administrador
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AsignarPeriodo"
+        required: true
+      responses:
+        "200":
+          description: Periodo asignado correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+  /gestion-ets/periodo/{idPeriodo}:
+    delete:
+      tags:
+      - Administrador
+      parameters:
+      - name: idPeriodo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      summary: Eliminar Periodo
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+  /gestion-ets/{idEts}:
+    delete:
+      summary: Elimina un ETS por id
+      operationId: deleteEtsById
+      tags:
+      - Administrador
+      parameters:
+      - name: idEts
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: ETS eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+  /gestion-etsAgenda/inicio:
+    get:
+      summary: Obtiene los ETS próximos
+      description: Retorna los ETS próximos y su fecha para el usuario autenticado
+      operationId: getEtsProximos
+      responses:
+        "200":
+          description: Petición exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MateriaEtsDTO"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      tags:
+      - Alumno Controller
+      security:
+      - SecurityScheme:
+        - ALUMNO
+  /gestion-etsAgenda/{idEtsAgenda}:
+    delete:
+      summary: Elimina un ETS de la agenda
+      description: Elimina el ETS indicado de la agenda del usuario autenticado
+      operationId: deleteEtsAgenda
+      parameters:
+      - name: idEtsAgenda
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Petición exitosa
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      tags:
+      - Alumno Controller
+      security:
+      - SecurityScheme:
+        - ALUMNO
+  /gestion-etsAgenda/{idEts}:
+    get:
+      summary: 'Obtiene la informacion de los ets que eligio '
+      description: Obtiene los ets que eligio
+      operationId: getEtsById
+      parameters:
+      - description: identificador del ets
+        name: idEts
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Petición exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DetalleEts"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      tags:
+      - Alumno Controller
+      security:
+      - SecurityScheme:
+        - ALUMNO
+  /gestion-etsAgenda/{idEts}/agenda:
+    post:
+      summary: Agrega un ETS a la agenda
+      description: Registra el ETS indicado en la agenda del usuario autenticado
+      operationId: createEtsAgenda
+      parameters:
+      - name: idEts
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Petición exitosa
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      tags:
+      - Alumno Controller
+      security:
+      - SecurityScheme:
+        - ALUMNO
+  /perfil:
+    get:
+      summary: Obtiene el perfil del usuario autenticado
+      description: "Devuelve nombre, apellidos, email y rol. Reutilizable para pre-llenar\
+        \ las vistas de cambiar nombre y contraseña."
+      operationId: getPerfil
+      tags:
+      - Perfil
+      responses:
+        "200":
+          description: Perfil obtenido correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Perfil"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ALUMNO
+        - ADMINISTRADOR
+  /perfil/nombre:
+    put:
+      summary: Actualiza el nombre del usuario autenticado
+      description: "Permite actualizar nombre(s), primer apellido y segundo apellido."
+      operationId: cambiarNombre
+      tags:
+      - Perfil
+      requestBody:
+        description: Datos del nombre a actualizar
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CambiarNombre"
+        required: true
+      responses:
+        "200":
+          description: Nombre actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "400":
+          description: Datos inválidos
+        "404":
+          description: Usuario no encontrado
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ALUMNO
+        - ADMINISTRADOR
+  /perfil/password:
+    put:
+      summary: Cambia la contraseña del usuario autenticado
+      description: Verifica la contraseña actual y guarda la nueva hasheada.
+      operationId: cambiarPassword
+      tags:
+      - Perfil
+      requestBody:
+        description: Contraseña actual y nueva con confirmación
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CambiarPassword"
+        required: true
+      responses:
+        "200":
+          description: Contraseña actualizada correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "400":
+          description: Contraseña incorrecta o no coinciden
+        "404":
+          description: Usuario no encontrado
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ALUMNO
+        - ADMINISTRADOR
+info:
+  title: gestion-ets-API
+  version: v0.0.1
+  description: API Rest que implementa el negocio del calendario de ets en el sistema

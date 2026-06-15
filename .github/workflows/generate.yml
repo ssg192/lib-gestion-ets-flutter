@@ -1,0 +1,47 @@
+name: Generate Flutter SDK
+
+on:
+  push:
+    paths:
+      - 'openapi.yaml'
+    branches:
+      - main
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get version
+        id: version
+        run: echo "VERSION=1.0.${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - name: Generate Dart client
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: dart-dio
+          openapi-file: openapi.yaml
+          command-args: >-
+            --additional-properties=pubName=lib_gestion_ets_flutter,pubVersion=${{ steps.version.outputs.VERSION }}
+
+      - name: Move generated files to root
+        run: |
+          cp -r dart-dio-client/lib/* lib/
+          cp dart-dio-client/pubspec.yaml pubspec.yaml
+
+      - name: Generate domain models
+        run: |
+          pip install pyyaml
+          python scripts/generate_domain.py
+
+      - name: Commit generated code
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add lib/ pubspec.yaml
+          git diff --staged --quiet || git commit -m "chore: generate v${{ steps.version.outputs.VERSION }}"
+          git tag -a ${{ steps.version.outputs.VERSION }} -m "v${{ steps.version.outputs.VERSION }}"
+          git push origin main --tags

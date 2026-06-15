@@ -29,6 +29,7 @@ jobs:
 
       - name: Move generated files to root
         run: |
+          mkdir -p lib
           cp -r dart-dio-client/lib/* lib/
           cp dart-dio-client/pubspec.yaml pubspec.yaml
 

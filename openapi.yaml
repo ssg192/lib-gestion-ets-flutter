@@ -466,6 +466,10 @@ components:
           type: integer
           format: int32
           description: Id del docente / profesor evaluador
+        idCarrera:
+          type: integer
+          format: int32
+          description: Id carrera
         idAula:
           type: integer
           format: int32

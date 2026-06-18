@@ -27,6 +27,21 @@ components:
           type: integer
           format: int32
           description: Id del tipo de ETS
+    Aula:
+      type: object
+      description: DTO con la información de un salón
+      properties:
+        id:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Id del salón
+        clave:
+          type: string
+          description: Clave del salón
+        edificio:
+          type: string
+          description: Edificio del salón
     CambiarNombre:
       type: object
       required:
@@ -68,6 +83,21 @@ components:
           type: string
           pattern: \S
           description: Confirmación de la nueva contraseña
+    Carrera:
+      type: object
+      description: DTO con la información de una carrera
+      properties:
+        id:
+          type: integer
+          format: int32
+          readOnly: true
+          description: Id de la carrera
+        clave:
+          type: string
+          description: Clave de la carrera
+        nombre:
+          type: string
+          description: Nombre de la carrera
     CarreraDashboard:
       type: object
       description: DTO con la cantidad de exámenes por carrera
@@ -97,6 +127,36 @@ components:
         nombre:
           type: string
           description: Nombre del elemento del catálogo
+    CrearAula:
+      type: object
+      required:
+      - clave
+      - edificio
+      description: DTO para crear un salón
+      properties:
+        clave:
+          type: string
+          pattern: \S
+          description: Clave del salón
+        edificio:
+          type: string
+          pattern: \S
+          description: Edificio del salón
+    CrearCarrera:
+      type: object
+      required:
+      - clave
+      - nombre
+      description: DTO para crear una carrera
+      properties:
+        clave:
+          type: string
+          pattern: \S
+          description: Clave de la carrera
+        nombre:
+          type: string
+          pattern: \S
+          description: Nombre de la carrera
     CrearExamen:
       type: object
       required:
@@ -207,6 +267,46 @@ components:
           type: boolean
           readOnly: true
           description: Indica si el ETS fue guardado
+    EditarAula:
+      type: object
+      required:
+      - id
+      - clave
+      - edificio
+      description: DTO para editar un salón existente
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Id del salón a editar
+        clave:
+          type: string
+          pattern: \S
+          description: Clave del salón
+        edificio:
+          type: string
+          pattern: \S
+          description: Edificio del salón
+    EditarCarrera:
+      type: object
+      required:
+      - id
+      - clave
+      - nombre
+      description: DTO para editar una carrera existente
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Id de la carrera a editar
+        clave:
+          type: string
+          pattern: \S
+          description: Clave de la carrera
+        nombre:
+          type: string
+          pattern: \S
+          description: Nombre de la carrera
     EditarExamen:
       type: object
       required:
@@ -342,6 +442,38 @@ components:
           type: string
           readOnly: true
           description: Nombre del turno
+        idTipoEts:
+          type: integer
+          format: int32
+          description: Id del tipo de ETS
+        fechaAplicacion:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          description: Fecha y hora de aplicación del examen
+    GetExamen:
+      type: object
+      description: DTO para obtener un examen ETS
+      properties:
+        idEts:
+          type: integer
+          format: int32
+          description: Id del examen
+        idMateria:
+          type: integer
+          format: int32
+          description: Id de la materia / unidad de aprendizaje
+        idDocente:
+          type: integer
+          format: int32
+          description: Id del docente / profesor evaluador
+        idAula:
+          type: integer
+          format: int32
+          description: Id del aula / salón
+        idTurno:
+          type: integer
+          format: int32
+          description: Id del turno
         idTipoEts:
           type: integer
           format: int32
@@ -599,6 +731,115 @@ paths:
       security:
       - SecurityScheme:
         - ADMINISTRADOR
+  /gestion-ets/carreras:
+    get:
+      summary: Lista todas las carreras
+      operationId: listCarreras
+      tags:
+      - Administrador
+      responses:
+        "200":
+          description: Listado de carreras
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Carrera"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+    put:
+      summary: Edita una carrera existente
+      operationId: editarCarrera
+      tags:
+      - Administrador
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditarCarrera"
+        required: true
+      responses:
+        "200":
+          description: Carrera editada correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "404":
+          description: Carrera no encontrada
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+    post:
+      summary: Crea una nueva carrera
+      operationId: crearCarrera
+      tags:
+      - Administrador
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CrearCarrera"
+        required: true
+      responses:
+        "200":
+          description: Carrera creada correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "400":
+          description: Clave de carrera duplicada
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+  /gestion-ets/carreras/{id}:
+    delete:
+      summary: Elimina una carrera
+      operationId: eliminarCarrera
+      tags:
+      - Administrador
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Carrera eliminada correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "400":
+          description: "Carrera en uso, no es posible eliminarla"
+        "404":
+          description: Carrera no encontrada
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
   /gestion-ets/dashboard:
     get:
       summary: Obtiene el dashboard del administrador
@@ -793,6 +1034,120 @@ paths:
       security:
       - SecurityScheme:
         - ADMINISTRADOR
+  /gestion-ets/salones:
+    get:
+      summary: "Lista salones, opcionalmente filtrados por edificio"
+      operationId: listSalones
+      tags:
+      - Administrador
+      parameters:
+      - name: edificio
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Listado de salones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Aula"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+    put:
+      summary: Edita un salón existente
+      operationId: editarSalon
+      tags:
+      - Administrador
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditarAula"
+        required: true
+      responses:
+        "200":
+          description: Salón editado correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "404":
+          description: Salón no encontrado
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+    post:
+      summary: Crea un nuevo salón
+      operationId: crearSalon
+      tags:
+      - Administrador
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CrearAula"
+        required: true
+      responses:
+        "200":
+          description: Salón creado correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "400":
+          description: Clave de salón duplicada
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+  /gestion-ets/salones/{id}:
+    delete:
+      summary: Elimina un salón
+      operationId: eliminarSalon
+      tags:
+      - Administrador
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Salón eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "400":
+          description: "Salón en uso, no es posible eliminarlo"
+        "404":
+          description: Salón no encontrado
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
   /gestion-ets/{idEts}:
     delete:
       summary: Elimina un ETS por id
@@ -813,6 +1168,33 @@ paths:
             application/json:
               schema:
                 type: boolean
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+      security:
+      - SecurityScheme:
+        - ADMINISTRADOR
+  /gestion-ets/{idExamen}:
+    get:
+      summary: obtiene la informacion de un examen
+      operationId: getExamenById
+      tags:
+      - Administrador
+      parameters:
+      - name: idExamen
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: obtiene la informacion de un examen
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetExamen"
         "401":
           description: Not Authorized
         "403":
@@ -1019,6 +1401,3 @@ info:
   title: gestion-ets-API
   version: v0.0.1
   description: API Rest que implementa el negocio del calendario de ets en el sistema
-
-
-

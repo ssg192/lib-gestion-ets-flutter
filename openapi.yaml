@@ -470,6 +470,10 @@ components:
           type: integer
           format: int32
           description: Id carrera
+        semestre:
+          type: integer
+          format: int32
+          description: semestre
         idAula:
           type: integer
           format: int32

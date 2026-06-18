@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "lib_gestion_ets_flutter",
-      "version": "1.0.5",
+      "version": "1.0.6",
       "dependencies": [
         "built_collection",
         "built_value",

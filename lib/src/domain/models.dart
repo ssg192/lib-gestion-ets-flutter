@@ -8,6 +8,13 @@ class AsignarPeriodo {
   const AsignarPeriodo({this.nombre, this.fechaInicio, this.fechaFin, this.idTipoEts});
 }
 
+class Aula {
+  final int? id;
+  final String? clave;
+  final String? edificio;
+  const Aula({this.id, this.clave, this.edificio});
+}
+
 class CambiarNombre {
   final String? nombre;
   final String? primerApellido;
@@ -22,6 +29,13 @@ class CambiarPassword {
   const CambiarPassword({this.passwordActual, this.passwordNueva, this.passwordConfirmacion});
 }
 
+class Carrera {
+  final int? id;
+  final String? clave;
+  final String? nombre;
+  const Carrera({this.id, this.clave, this.nombre});
+}
+
 class CarreraDashboard {
   final int? id;
   final String? nombre;
@@ -33,6 +47,18 @@ class Catalogo {
   final int? id;
   final String? nombre;
   const Catalogo({this.id, this.nombre});
+}
+
+class CrearAula {
+  final String? clave;
+  final String? edificio;
+  const CrearAula({this.clave, this.edificio});
+}
+
+class CrearCarrera {
+  final String? clave;
+  final String? nombre;
+  const CrearCarrera({this.clave, this.nombre});
 }
 
 class CrearExamen {
@@ -66,6 +92,20 @@ class DetalleEts {
   final String? carrera;
   final bool? guardado;
   const DetalleEts({this.id, this.materia, this.plan, this.fecha, this.hora, this.turno, this.salon, this.evaluador, this.carrera, this.guardado});
+}
+
+class EditarAula {
+  final int? id;
+  final String? clave;
+  final String? edificio;
+  const EditarAula({this.id, this.clave, this.edificio});
+}
+
+class EditarCarrera {
+  final int? id;
+  final String? clave;
+  final String? nombre;
+  const EditarCarrera({this.id, this.clave, this.nombre});
 }
 
 class EditarExamen {
@@ -118,6 +158,17 @@ class Examen {
   final int? idTipoEts;
   final String? fechaAplicacion;
   const Examen({this.idEts, this.idMateria, this.nombreMateria, this.idDocente, this.nombreDocente, this.idAula, this.claveAula, this.idTurno, this.nombreTurno, this.idTipoEts, this.fechaAplicacion});
+}
+
+class GetExamen {
+  final int? idEts;
+  final int? idMateria;
+  final int? idDocente;
+  final int? idAula;
+  final int? idTurno;
+  final int? idTipoEts;
+  final String? fechaAplicacion;
+  const GetExamen({this.idEts, this.idMateria, this.idDocente, this.idAula, this.idTurno, this.idTipoEts, this.fechaAplicacion});
 }
 
 class LocalDateTime {

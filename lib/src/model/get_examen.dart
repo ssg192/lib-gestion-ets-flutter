@@ -14,6 +14,7 @@ part 'get_examen.g.dart';
 /// * [idEts] - Id del examen
 /// * [idMateria] - Id de la materia / unidad de aprendizaje
 /// * [idDocente] - Id del docente / profesor evaluador
+/// * [idCarrera] - Id carrera
 /// * [idAula] - Id del aula / salón
 /// * [idTurno] - Id del turno
 /// * [idTipoEts] - Id del tipo de ETS
@@ -31,6 +32,10 @@ abstract class GetExamen implements Built<GetExamen, GetExamenBuilder> {
   /// Id del docente / profesor evaluador
   @BuiltValueField(wireName: r'idDocente')
   int? get idDocente;
+
+  /// Id carrera
+  @BuiltValueField(wireName: r'idCarrera')
+  int? get idCarrera;
 
   /// Id del aula / salón
   @BuiltValueField(wireName: r'idAula')
@@ -89,6 +94,13 @@ class _$GetExamenSerializer implements PrimitiveSerializer<GetExamen> {
       yield r'idDocente';
       yield serializers.serialize(
         object.idDocente,
+        specifiedType: const FullType(int),
+      );
+    }
+    if (object.idCarrera != null) {
+      yield r'idCarrera';
+      yield serializers.serialize(
+        object.idCarrera,
         specifiedType: const FullType(int),
       );
     }
@@ -163,6 +175,13 @@ class _$GetExamenSerializer implements PrimitiveSerializer<GetExamen> {
             specifiedType: const FullType(int),
           ) as int;
           result.idDocente = valueDes;
+          break;
+        case r'idCarrera':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
+          result.idCarrera = valueDes;
           break;
         case r'idAula':
           final valueDes = serializers.deserialize(

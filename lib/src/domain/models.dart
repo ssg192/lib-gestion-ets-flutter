@@ -164,11 +164,12 @@ class GetExamen {
   final int? idEts;
   final int? idMateria;
   final int? idDocente;
+  final int? idCarrera;
   final int? idAula;
   final int? idTurno;
   final int? idTipoEts;
   final String? fechaAplicacion;
-  const GetExamen({this.idEts, this.idMateria, this.idDocente, this.idAula, this.idTurno, this.idTipoEts, this.fechaAplicacion});
+  const GetExamen({this.idEts, this.idMateria, this.idDocente, this.idCarrera, this.idAula, this.idTurno, this.idTipoEts, this.fechaAplicacion});
 }
 
 class LocalDateTime {
